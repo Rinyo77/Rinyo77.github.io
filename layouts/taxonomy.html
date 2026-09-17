@@ -1,0 +1,7 @@
+{{ define "main" }}
+<header><h1 class="visually-hidden">{{ .Title }}</h1>{{ with .Description }}<p>{{ . }}</p>{{ end }}</header>
+{{ .Content }}
+<ul class="topics">
+  {{ range .Pages.ByTitle }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Description }}<p>{{ . }}</p>{{ end }}</li>{{ end }}
+</ul>
+{{ end }}

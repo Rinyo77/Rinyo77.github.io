@@ -1,0 +1,12 @@
+{{ define "main" }}
+<article class="page{{ if eq .RelPermalink "/about/" }} about-page{{ end }}">
+  <header>
+    <h1{{ if eq .RelPermalink "/about/" }} class="visually-hidden"{{ end }}>{{ .Title }}</h1>
+    {{ if eq .Section "journal" }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>{{ end }}
+    {{ if .Params.sample }}<p class="sample-notice">Sample entry — an example, not the author's personal history.</p>{{ end }}
+  </header>
+  <div class="content">{{ .Content }}</div>
+  {{ with .GetTerms "topics" }}<nav aria-label="Entry topics">{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</nav>{{ end }}
+  {{ with .GetTerms "tags" }}<nav aria-label="Entry tags">{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</nav>{{ end }}
+</article>
+{{ end }}

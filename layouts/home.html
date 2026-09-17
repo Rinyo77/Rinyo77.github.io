@@ -1,0 +1,19 @@
+{{ define "main" }}
+<header><h1 class="visually-hidden">{{ .Title }}</h1><p>{{ site.Params.intro }}</p></header>
+{{ .Content }}
+{{ $pages := where site.RegularPages "Section" "in" site.Params.mainSections }}
+{{ $pager := .Paginate $pages.ByDate.Reverse }}
+{{ range $pager.Pages }}
+<article class="entry">
+  <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+  {{ if .Params.sample }}<span class="sample-label">Sample entry</span>{{ end }}
+  <p>{{ .Description }}</p>
+  {{ range .GetTerms "topics" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+</article>
+{{ end }}
+{{ if gt $pager.TotalPages 1 }}<nav aria-label="Pagination">
+  {{ with $pager.Prev }}<a href="{{ .URL }}">Newer entries</a>{{ end }}
+  {{ with $pager.Next }}<a href="{{ .URL }}">Older entries</a>{{ end }}
+</nav>{{ end }}
+{{ end }}

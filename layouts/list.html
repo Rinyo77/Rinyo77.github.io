@@ -1,0 +1,12 @@
+{{ define "main" }}
+<header><h1 class="visually-hidden">{{ .Title }}</h1>{{ with .Description }}<p>{{ . }}</p>{{ end }}</header>
+{{ .Content }}
+{{ range .Pages.ByDate.Reverse }}
+<article class="entry">
+  <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+  {{ if .IsPage }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>{{ end }}
+  {{ if .Params.sample }}<span class="sample-label">Sample entry</span>{{ end }}
+  {{ with .Description }}<p>{{ . }}</p>{{ end }}
+</article>
+{{ end }}
+{{ end }}

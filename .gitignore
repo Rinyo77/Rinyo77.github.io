@@ -1,0 +1,4 @@
+.cache/
+.verification/
+.hugo_build.lock
+public/

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="{{ site.Params.author }}">
+  <meta name="description" content="{{ .Description | default site.Params.description }}">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  {{ if or site.Params.demo .Params.sample }}<meta name="robots" content="noindex, nofollow">{{ end }}
+  <title>{{ if not .IsHome }}{{ .Title }} · {{ end }}{{ site.Title }}</title>
+  {{ $css := resources.Get "css/site.css" | minify | fingerprint "sha384" }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
+  <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ "index.xml" | relURL }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="site-title" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+    <nav aria-label="Main navigation">
+      {{ range site.Menus.main }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}
+    </nav>
+  </header>
+  {{ if site.Params.demo }}<aside class="demo-notice">This is a starter notebook. Sample entries are examples, not the author's personal history.</aside>{{ end }}
+  <main id="main">{{ block "main" . }}{{ end }}</main>
+  <footer class="site-footer"><span>{{ site.Params.author }}</span> · <a href="{{ "index.xml" | relURL }}">RSS</a></footer>
+</body>
+</html>
