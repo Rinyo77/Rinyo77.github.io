@@ -167,8 +167,8 @@ Check all of the following before signing off:
 - Browser developer tools show no unexpected external resource requests or
   CSP-blocked required resources. The page makes no tracking requests.
 
-Leave demo mode on and do not publish the sample site while verification is
-incomplete. Record the date, tool versions, command exit status, and manual
+Demo mode does not prevent deployment or hide committed source. Keep unreviewed
+changes off `main`. Record the date, tool versions, command exit status, and manual
 findings in `VERIFICATION.md`. If anything fails, retain the log, fix the issue,
 and rerun verification before changing the completion status.
 
