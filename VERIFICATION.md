@@ -1,5 +1,9 @@
 # Verification status
 
+This is the historical handoff record, not the current deployment status.
+See GitHub Actions for current build/deployment results. The statements below
+describe the authoring environment on the recorded date.
+
 Date: September 16, 2026.
 
 **INCOMPLETE: no actual Hugo build or rendered browser verification has passed

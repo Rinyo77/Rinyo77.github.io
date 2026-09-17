@@ -4,9 +4,9 @@ A small, English-language notebook with warm paper, aubergine headings, and
 orange accents. Rinyo is the only public display name. The GitHub account name
 is used only for repository ownership and deployment, not as visible UI text.
 
-**Status: incomplete; no actual Hugo build or rendered browser verification has
-passed in the authoring environment.** See `WSL-VERIFY.md` for exact WSL setup and
-verification commands, and `VERIFICATION.md` for the evidence and remaining work.
+See `WSL-VERIFY.md` for local verification commands and `VERIFICATION.md` for
+the historical handoff record. Current build and deployment results are in
+GitHub Actions; a successful deployment does not establish manual visual review.
 
 The standalone `rinyo-site-handoff.zip` export contains this website directory,
 including layouts, CSS, verification tools, and hidden deployment files. Export
@@ -26,7 +26,8 @@ directory. No parent project files belong in the website's publishing repository
 - Local CSS and an original SVG favicon. No theme download, npm, remote fonts,
   browser JavaScript, analytics, comments, database, or CMS.
 - A GitHub Pages workflow with separate build/deploy permissions, pinned action
-  commits, and a versioned Hugo download checked against its release checksums.
+  commits, and a versioned Hugo download checked against a SHA-256 digest pinned
+  in the workflow. Pull requests build without deployment permissions.
 
 ## Local preview
 
@@ -64,9 +65,9 @@ Output goes into `public/`, which is ignored by Git. Do not edit generated HTML.
 5. Set `params.demo = false` in `hugo.toml` once the starter is ready.
 
 Demo mode displays a starter notice and adds `noindex, nofollow` to HTML pages.
-The deployment workflow skips publication while demo mode is enabled or any
-non-draft sample entry remains. This is an accidental-publication guard, not
-access control or a privacy guarantee. It cannot remove an already published site.
+It does not block deployment or hide source files. Review content before merging
+to `main`: pushes to `main` and manual runs on `main` publish the site, including
+any non-draft samples. Pull requests and manual runs on other branches do not publish.
 
 ## Write an entry
 
@@ -122,8 +123,8 @@ stage only the reviewed files; do not blindly stage the parent workspace.
    site, or `https://rinyo77.github.io/REPOSITORY/` for a project site, including
    the trailing slash. The address is not a public display-name label.
 4. In the repository's **Settings → Pages**, select **GitHub Actions** as Source.
-5. Push the reviewed website files to `main`. The workflow builds the site; it
-   publishes only when the readiness guard passes. If needed, run it manually
+5. Push the reviewed website files to `main`. The workflow builds the site and
+   publishes only after a successful build. If needed, run it manually on `main`
    from the Actions tab after configuring Pages.
 6. Check the deployed homepage, a topic, an article, Archive, and `index.xml`.
    Verify mobile and keyboard navigation. Enable **Enforce HTTPS** in Pages
@@ -153,18 +154,18 @@ anything from the current workspace.
   general sanitizer for untrusted contributors. Review all source changes.
 - A meta CSP cannot enforce `frame-ancestors`; this starter does not claim full
   HTTP security-header control on GitHub Pages. The host can still keep logs.
-- Release checksums fetched from the same release detect download mismatch;
-  they do not independently protect against a compromised release publisher.
-- Action pins correspond to checkout 4.2.2, configure-pages 5.0.0,
-  upload-pages-artifact 3.0.1, and deploy-pages 4.0.5. These are fixed versions,
-  not an assertion that they are the newest. Review updates periodically and
-  re-pin reviewed commits rather than tracking a moving branch.
+- The Hugo 0.166.0 standard Linux amd64 package digest was checked against the
+  official release asset metadata and checksum file, then pinned in the workflow.
+  Download mismatch stops installation. This does not independently establish
+  trust in the original release publisher. Update the version and digest together.
+- Action commits are pinned for checkout v5, configure-pages v5,
+  upload-pages-artifact v4, and deploy-pages v4. Review updates periodically and
+  re-pin reviewed commits rather than tracking a moving tag.
 
-## Validation status in this workspace
+## Local validation
 
-Hugo and Chrome/Chromium are not installed in the supplied workspace. No
-dependencies or Python virtual environments were installed. Source checks do not
-establish that templates compile or render correctly. Run `bash tools/verify-wsl.sh`
-from this directory after following `WSL-VERIFY.md`, then complete its manual
-visual and keyboard checklist. Missing tools or failed checks return a nonzero
-exit status; no output is fabricated and no local command deploys the site.
+Run `bash tools/verify-wsl.sh` from this directory after following `WSL-VERIFY.md`,
+then complete its manual visual and keyboard checklist. For a build and generated
+HTML check without browser captures, use `python3 tools/verify_site.py --html-only`.
+Missing tools or failed checks return a nonzero exit status. These commands do
+not deploy the site; source checks alone do not establish rendered correctness.
